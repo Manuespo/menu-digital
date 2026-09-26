@@ -1,1 +1,114 @@
-/* You can add global styles to this file, and also import other style files */
+/* Reset global. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: #faf8f5;
+  font-family: -apple-system, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+/* ---------- Temas del menú ----------
+   Cada clase se aplica al contenedor raíz de AppComponent (.app) y redefine
+   el MISMO set de variables. Las reglas visuales viven en app.component.css
+   y solo leen estas variables. Están acá (global) y no en el componente para
+   no pasar el budget de 4 kB por componente de angular.json. */
+
+.theme-clasico {
+  --color-bg: #faf8f5;
+  --color-surface: transparent;
+  --color-text: #2b2620;
+  --color-muted: #6b6357;
+  --color-accent: #b5452a;
+  --color-on-accent: #fff;
+  --color-border: #e6ddd2;
+  --color-price: var(--color-text);
+  --font-body: -apple-system, system-ui, sans-serif;
+  --font-heading: var(--font-body);
+  --font-size-title: 1.75rem;
+  --weight-body: 400;
+  --weight-title: 700;
+  --weight-category: 700;
+  --weight-item: 600;
+  --category-size: 0.9rem;
+  --category-spacing: 0.08em;
+  --category-transform: uppercase;
+  --header-align: center;
+  --header-border: 2px solid var(--color-accent);
+  --space-page: 1.25rem;
+  --space-section: 2rem;
+  --item-padding: 0.875rem 0;
+  --item-gap: 0;
+  --item-border: 1px solid var(--color-border);
+  --item-shadow: none;
+  --radius: 6px;
+}
+
+.theme-moderno {
+  --color-bg: #121214;
+  --color-surface: #1d1d21;
+  --color-text: #f2f2f0;
+  --color-muted: #a3a3ab;
+  --color-accent: #c6f432;
+  --color-on-accent: #121214;
+  --color-border: #2c2c32;
+  --color-price: var(--color-accent);
+  --font-body: -apple-system, system-ui, sans-serif;
+  --font-heading: var(--font-body);
+  --font-size-title: 2.25rem;
+  --weight-body: 400;
+  --weight-title: 800;
+  --weight-category: 800;
+  --weight-item: 700;
+  --category-size: 1.35rem;
+  --category-spacing: -0.01em;
+  --category-transform: none;
+  --header-align: left;
+  --header-border: none;
+  --space-page: 1.25rem;
+  --space-section: 3rem;
+  --item-padding: 1rem 1.125rem;
+  --item-gap: 0.75rem;
+  --item-border: none;
+  --item-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 16px rgb(0 0 0 / 0.25);
+  --radius: 12px;
+}
+
+.theme-elegante {
+  --color-bg: #fbf7ee;
+  --color-surface: transparent;
+  --color-text: #1a1814;
+  --color-muted: #6e665a;
+  --color-accent: #86692f;
+  --color-on-accent: #fbf7ee;
+  --color-border: #ddd0b2;
+  --color-price: var(--color-text);
+  --font-body: -apple-system, system-ui, sans-serif;
+  --font-heading: Georgia, 'Times New Roman', serif;
+  --font-size-title: 2rem;
+  --weight-body: 300;
+  --weight-title: 400;
+  --weight-category: 400;
+  --weight-item: 400;
+  --category-size: 0.75rem;
+  --category-spacing: 0.3em;
+  --category-transform: uppercase;
+  --header-align: center;
+  --header-border: 1px solid var(--color-accent);
+  --space-page: 1.75rem;
+  --space-section: 3.5rem;
+  --item-padding: 1.25rem 0;
+  --item-gap: 0;
+  --item-border: 1px solid var(--color-border);
+  --item-shadow: none;
+  --radius: 0;
+}

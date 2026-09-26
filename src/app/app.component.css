@@ -1,0 +1,138 @@
+/* Reglas comunes a los 3 temas: solo usan las variables definidas en src/styles.css (.theme-*). */
+
+.app {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: var(--weight-body);
+}
+
+.contenido {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 0 var(--space-page);
+}
+
+/* SELECTOR TEMPORAL (solo desarrollo) — borrar junto con el del template */
+.theme-switcher {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.theme-switcher button {
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.theme-switcher button.activo {
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.header {
+  padding: 2.5rem 0 1.5rem;
+  text-align: var(--header-align);
+  border-bottom: var(--header-border);
+}
+
+.header h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-title);
+  font-weight: var(--weight-title);
+  line-height: 1.15;
+}
+
+.subtitulo {
+  margin: 0.5rem 0 0;
+  color: var(--color-muted);
+}
+
+.categoria {
+  margin-top: var(--space-section);
+}
+
+.categoria h2 {
+  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-size: var(--category-size);
+  font-weight: var(--weight-category);
+  letter-spacing: var(--category-spacing);
+  text-transform: var(--category-transform);
+  color: var(--color-accent);
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--item-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: var(--item-padding);
+  background: var(--color-surface);
+  border-bottom: var(--item-border);
+  border-radius: var(--radius);
+  box-shadow: var(--item-shadow);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: var(--weight-item);
+}
+
+.descripcion {
+  margin: 0.25rem 0 0;
+  font-size: 0.925rem;
+  color: var(--color-muted);
+}
+
+.precio {
+  flex-shrink: 0;
+  font-weight: var(--weight-item);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-price);
+}
+
+.footer {
+  margin-top: var(--space-section);
+  padding: 1.5rem 0 2.5rem;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.footer p {
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .header h1 {
+    font-size: calc(var(--font-size-title) * 1.3);
+  }
+}
