@@ -136,3 +136,10 @@ ul {
     font-size: calc(var(--font-size-title) * 1.3);
   }
 }
+
+.estado {
+  margin: 0;
+  padding: 3rem 0;
+  text-align: center;
+  color: var(--color-muted);
+}

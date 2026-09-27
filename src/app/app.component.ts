@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { EMPTY, catchError } from 'rxjs';
 
-import { MENU, MenuCategory } from './menu.model';
+import { Menu } from './menu.model';
+import { MenuService } from './menu.service';
 
 export type Theme = 'clasico' | 'moderno' | 'elegante';
 
@@ -12,11 +14,27 @@ export type Theme = 'clasico' | 'moderno' | 'elegante';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  restaurante = 'Restaurante Ejemplo';
-  categorias: MenuCategory[] = MENU;
+export class AppComponent implements OnInit {
+  private menuService = inject(MenuService);
+
+  // null mientras carga; si falla queda null y `error` en true.
+  menu: Menu | null = null;
+  error = false;
 
   activeTheme: Theme = 'clasico';
+
+  ngOnInit(): void {
+    this.menuService
+      .getMenu()
+      .pipe(
+        catchError((err) => {
+          console.error('Error al cargar el menú', err);
+          this.error = true;
+          return EMPTY;
+        })
+      )
+      .subscribe((menu) => (this.menu = menu));
+  }
 
   // ============================================================================
   // ⚠️  SELECTOR DE TEMAS TEMPORAL — SOLO PARA DESARROLLO  ⚠️

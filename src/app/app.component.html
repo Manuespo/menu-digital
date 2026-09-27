@@ -23,16 +23,20 @@
   <!-- ⚠️ FIN SELECTOR TEMPORAL -->
 
   <div class="contenido">
+    <p class="estado" *ngIf="!menu && !error">Cargando menú...</p>
+    <p class="estado" *ngIf="error">No se pudo cargar el menú</p>
+
+    <ng-container *ngIf="menu">
     <header class="header">
-      <h1>{{ restaurante }}</h1>
+      <h1>{{ menu.nombre }}</h1>
       <p class="subtitulo">Cocina casera y parrilla</p>
     </header>
 
     <main class="menu">
-      <section class="categoria" *ngFor="let categoria of categorias">
+      <section class="categoria" *ngFor="let categoria of menu.categorias">
         <h2>{{ categoria.nombre }}</h2>
         <ul>
-          <li class="item" *ngFor="let item of categoria.items">
+          <li class="item" *ngFor="let item of categoria.productos">
             <div class="item-texto">
               <h3>{{ item.nombre }}</h3>
               <p class="descripcion" *ngIf="item.descripcion">{{ item.descripcion }}</p>
@@ -46,6 +50,7 @@
     <footer class="footer">
       <p>Precios en pesos argentinos, IVA incluido. Consultá por opciones sin TACC.</p>
     </footer>
+    </ng-container>
   </div>
 </div>
 
