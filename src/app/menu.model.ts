@@ -3,7 +3,7 @@
 export interface MenuItem {
   id: string;
   nombre: string;
-  descripcion: string;
+  descripcion: string | null;
   precio: number;
   imagen: string | null;
 }
@@ -18,5 +18,5 @@ export interface Menu {
   restaurantId: string;
   nombre: string;
   categorias: MenuCategory[];
-  tema: string;
+  tema?: string;
 }

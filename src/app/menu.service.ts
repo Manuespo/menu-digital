@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 import { Menu } from './menu.model';
 
 // Por ahora fija; más adelante pasa a environment.ts.
-const MENU_API_URL = 'https://a9n5chjhe4.execute-api.us-east-1.amazonaws.com/menu/restaurante-ejemplo';
+const API_BASE_URL = 'https://a9n5chjhe4.execute-api.us-east-1.amazonaws.com';
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
   private http = inject(HttpClient);
 
-  getMenu(): Observable<Menu> {
-    return this.http.get<Menu>(MENU_API_URL);
+  getMenu(restaurantId: string): Observable<Menu> {
+    return this.http.get<Menu>(`${API_BASE_URL}/menu/${encodeURIComponent(restaurantId)}`);
   }
 }

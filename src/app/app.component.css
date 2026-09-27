@@ -143,3 +143,22 @@ ul {
   text-align: center;
   color: var(--color-muted);
 }
+
+.selector-restaurante {
+  display: flex;
+  align-items: center;
+  justify-content: var(--header-align);
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.selector-restaurante select {
+  padding: 0.35rem 0.5rem;
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}

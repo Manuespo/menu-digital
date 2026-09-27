@@ -23,14 +23,27 @@
   <!-- ⚠️ FIN SELECTOR TEMPORAL -->
 
   <div class="contenido">
+    <header class="header">
+      <!-- Fuera del *ngIf="menu" para poder cambiar de restaurante aunque falle la carga. -->
+      <label class="selector-restaurante">
+        <span>Restaurante</span>
+        <select #selector (change)="irARestaurante(selector.value)">
+          <option
+            *ngFor="let r of restaurantes"
+            [value]="r.id"
+            [selected]="r.id === restaurantId"
+          >
+            {{ r.label }}
+          </option>
+        </select>
+      </label>
+      <h1 *ngIf="menu">{{ menu.nombre }}</h1>
+    </header>
+
     <p class="estado" *ngIf="!menu && !error">Cargando menú...</p>
     <p class="estado" *ngIf="error">No se pudo cargar el menú</p>
 
     <ng-container *ngIf="menu">
-    <header class="header">
-      <h1>{{ menu.nombre }}</h1>
-      <p class="subtitulo">Cocina casera y parrilla</p>
-    </header>
 
     <main class="menu">
       <section class="categoria" *ngFor="let categoria of menu.categorias">
