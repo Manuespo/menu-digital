@@ -11,6 +11,8 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      DISTRIBUTION_ID: E1JNQE0T485H8D
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,8 +36,22 @@ jobs:
           role-to-assume: arn:aws:iam::942198061038:role/github-actions-menu-digital-deploy
           aws-region: us-east-1
 
-      - name: Sync to S3
-        run: aws s3 sync dist/menu-digital/browser s3://aws-bucket-manuespo --delete
+      # 1) Assets con hash en el nombre (main-XXXX.js, styles-XXXX.css, media/*):
+      #    cacheables para siempre, el nombre cambia en cada build.
+      - name: Sync to S3 (hashed assets)
+        run: >-
+          aws s3 sync dist/menu-digital/browser s3://aws-bucket-manuespo --delete
+          --exclude "*" --include "*.js" --include "*.css" --include "media/*"
+          --cache-control "public, max-age=31536000, immutable"
 
-      - name: Invalidate CloudFront
-        run: aws cloudfront create-invalidation --distribution-id E1JNQE0T485H8D --paths "/*"
+      # 2) Todo lo demás (index.html, favicon.ico, archivos de public/): sin hash,
+      #    siempre se revalida. Va después de los assets para que el HTML nuevo
+      #    nunca apunte a bundles que todavía no se subieron.
+      - name: Sync to S3 (index.html y archivos sin hash)
+        run: >-
+          aws s3 sync dist/menu-digital/browser s3://aws-bucket-manuespo --delete
+          --exclude "*.js" --exclude "*.css" --exclude "media/*"
+          --cache-control "no-cache, must-revalidate"
+
+      - name: Invalidate index.html
+        run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/index.html" "/"
