@@ -50,7 +50,7 @@ jobs:
       - name: Sync to S3 (index.html y archivos sin hash)
         run: >-
           aws s3 sync dist/menu-digital/browser s3://aws-bucket-manuespo --delete
-          --exclude "*.js" --exclude "*.css" --exclude "media/*"
+          --exclude "*.js" --exclude "*.css" --exclude "media/*" --exclude "images/*"
           --cache-control "no-cache, must-revalidate"
 
       - name: Invalidate index.html
