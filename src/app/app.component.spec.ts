@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { Router, provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-import { Menu } from './menu.model';
+import { Menu, RestauranteResumen } from './menu.model';
 
 const MENU_MOCK: Menu = {
   restaurantId: 'restaurante-ejemplo',
@@ -26,6 +26,12 @@ const MENU_MOCK: Menu = {
   ],
 };
 
+const RESTAURANTES_MOCK: RestauranteResumen[] = [
+  { restaurantId: 'restaurante-ejemplo', nombre: 'Restaurante Ejemplo' },
+  { restaurantId: 'restaurante-parrilla-test', nombre: 'La Parrilla de Prueba' },
+  { restaurantId: 'restaurante-vegano-test', nombre: 'Verde Vegano (Test)' },
+];
+
 describe('AppComponent', () => {
   let http: HttpTestingController;
   let router: Router;
@@ -41,12 +47,26 @@ describe('AppComponent', () => {
 
   afterEach(() => http.verify());
 
-  async function crearEn(url: string) {
+  // Crea el componente, navega a `url` y responde GET /restaurantes
+  // (con RESTAURANTES_MOCK, o con error 500 si `listadoFalla`).
+  async function crearEn(url: string, { listadoFalla = false } = {}) {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
+    const listado = http.expectOne((req) => req.url.endsWith('/restaurantes'));
+    if (listadoFalla) {
+      listado.flush('error', { status: 500, statusText: 'Server Error' });
+    } else {
+      listado.flush(RESTAURANTES_MOCK);
+    }
     await router.navigateByUrl(url);
     fixture.detectChanges();
     return fixture;
+  }
+
+  function opcionesDelSelect(fixture: { nativeElement: HTMLElement }): string[] {
+    return Array.from(fixture.nativeElement.querySelectorAll('select option')).map(
+      (o) => (o as HTMLOptionElement).value
+    );
   }
 
   it('should redirect the empty path to restaurante-ejemplo', async () => {
@@ -105,6 +125,45 @@ describe('AppComponent', () => {
     expect(compiled.textContent).toContain('No se pudo cargar el menú');
     expect(compiled.querySelector('section.categoria')).toBeNull();
     expect(compiled.querySelector('select')).not.toBeNull();
+  });
+
+  it('should populate the selector from GET /restaurantes and mark the current one', async () => {
+    const fixture = await crearEn('/menu/restaurante-parrilla-test');
+    http.expectOne((req) => req.url.endsWith('/menu/restaurante-parrilla-test')).flush({
+      restaurantId: 'restaurante-parrilla-test', nombre: 'La Parrilla de Prueba', categorias: [],
+    });
+    fixture.detectChanges();
+
+    expect(opcionesDelSelect(fixture)).toEqual([
+      'restaurante-ejemplo', 'restaurante-parrilla-test', 'restaurante-vegano-test',
+    ]);
+    const select = fixture.nativeElement.querySelector('select') as HTMLSelectElement;
+    expect(select.value).toBe('restaurante-parrilla-test');
+  });
+
+  it('should navigate when a restaurant is picked in the selector', async () => {
+    const fixture = await crearEn('/menu/restaurante-ejemplo');
+    http.expectOne((req) => req.url.endsWith('/menu/restaurante-ejemplo')).flush(MENU_MOCK);
+    fixture.detectChanges();
+
+    const navigate = spyOn(router, 'navigate').and.resolveTo(true);
+    const select = fixture.nativeElement.querySelector('select') as HTMLSelectElement;
+    select.value = 'restaurante-vegano-test';
+    select.dispatchEvent(new Event('change'));
+    expect(navigate).toHaveBeenCalledWith(['/menu', 'restaurante-vegano-test']);
+  });
+
+  it('should keep the page working with only the current restaurant if the list fails', async () => {
+    const fixture = await crearEn('/menu/restaurante-ejemplo', { listadoFalla: true });
+    expect(opcionesDelSelect(fixture)).toEqual([]);
+
+    http.expectOne((req) => req.url.endsWith('/menu/restaurante-ejemplo')).flush(MENU_MOCK);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Restaurante Ejemplo');
+    expect(compiled.querySelectorAll('section.categoria').length).toBe(2);
+    expect(opcionesDelSelect(fixture)).toEqual(['restaurante-ejemplo']);
   });
 
   it('should format prices with thousands separator and decimals', () => {

@@ -20,3 +20,9 @@ export interface Menu {
   categorias: MenuCategory[];
   tema?: string;
 }
+
+// Forma de cada elemento de GET /restaurantes.
+export interface RestauranteResumen {
+  restaurantId: string;
+  nombre: string;
+}

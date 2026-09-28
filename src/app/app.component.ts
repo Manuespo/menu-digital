@@ -2,9 +2,9 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { EMPTY, catchError, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs';
+import { EMPTY, catchError, distinctUntilChanged, filter, map, of, startWith, switchMap, tap } from 'rxjs';
 
-import { Menu } from './menu.model';
+import { Menu, RestauranteResumen } from './menu.model';
 import { MenuService } from './menu.service';
 
 export type Theme = 'clasico' | 'moderno' | 'elegante';
@@ -21,12 +21,8 @@ export class AppComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
 
-  // Hardcodeados porque la API no tiene endpoint de listado todavía.
-  restaurantes = [
-    { id: 'restaurante-ejemplo', label: 'Restaurante Ejemplo' },
-    { id: 'restaurante-parrilla-test', label: 'Parrilla (test)' },
-    { id: 'restaurante-vegano-test', label: 'Vegano (test)' },
-  ];
+  // Listado para el <select>; queda vacío si GET /restaurantes falla.
+  restaurantes: RestauranteResumen[] = [];
 
   restaurantId: string | null = null;
 
@@ -36,7 +32,28 @@ export class AppComponent implements OnInit {
 
   activeTheme: Theme = 'clasico';
 
+  // Si el listado no llegó, el <select> muestra al menos el restaurante cargado.
+  get opcionesRestaurante(): RestauranteResumen[] {
+    if (this.restaurantes.length) return this.restaurantes;
+    return this.menu ? [{ restaurantId: this.menu.restaurantId, nombre: this.menu.nombre }] : [];
+  }
+
+  porRestaurantId(_: number, r: RestauranteResumen): string {
+    return r.restaurantId;
+  }
+
   ngOnInit(): void {
+    this.menuService
+      .getRestaurantes()
+      .pipe(
+        catchError((err) => {
+          console.error('Error al cargar el listado de restaurantes', err);
+          return of([]);
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((restaurantes) => (this.restaurantes = restaurantes));
+
     // AppComponent está fuera del <router-outlet>, así que su ActivatedRoute es
     // la raíz: el :restaurantId vive en `firstChild`. Lo releemos en cada
     // navegación y solo pedimos el menú cuando el id cambia.

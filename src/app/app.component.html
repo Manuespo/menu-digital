@@ -29,11 +29,11 @@
         <span>Restaurante</span>
         <select #selector (change)="irARestaurante(selector.value)">
           <option
-            *ngFor="let r of restaurantes"
-            [value]="r.id"
-            [selected]="r.id === restaurantId"
+            *ngFor="let r of opcionesRestaurante; trackBy: porRestaurantId"
+            [value]="r.restaurantId"
+            [selected]="r.restaurantId === restaurantId"
           >
-            {{ r.label }}
+            {{ r.nombre }}
           </option>
         </select>
       </label>
