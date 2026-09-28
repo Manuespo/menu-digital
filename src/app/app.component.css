@@ -84,6 +84,7 @@ ul {
 
 .item {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
@@ -96,6 +97,22 @@ ul {
 
 .item:last-child {
   border-bottom: none;
+}
+
+/* La imagen ocupa su propia fila (flex-wrap en .item) arriba del texto y el precio. */
+.item-imagen {
+  display: block;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+/* Toma el espacio restante sin forzar el wrap: el precio sigue en la misma fila. */
+.item-texto {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .item h3 {

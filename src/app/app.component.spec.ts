@@ -166,6 +166,53 @@ describe('AppComponent', () => {
     expect(opcionesDelSelect(fixture)).toEqual(['restaurante-ejemplo']);
   });
 
+  it('should render the product image only when imagen is not null', async () => {
+    const fixture = await crearEn('/menu/restaurante-ejemplo');
+    const url = 'https://tumenuapp.com/images/placeholders/principales.png';
+    http.expectOne((req) => req.url.endsWith('/menu/restaurante-ejemplo')).flush({
+      ...MENU_MOCK,
+      categorias: [{ id: 'principales', nombre: 'Principales', productos: [
+        { id: 'a', nombre: 'Bife de chorizo', descripcion: null, precio: 12800, imagen: url },
+        { id: 'b', nombre: 'Ñoquis', descripcion: null, precio: 8900, imagen: null },
+      ] }],
+    });
+    fixture.detectChanges();
+
+    const items = (fixture.nativeElement as HTMLElement).querySelectorAll('li.item');
+    const img = items[0].querySelector('img') as HTMLImageElement;
+    expect(img.getAttribute('src')).toBe(url);
+    expect(img.getAttribute('alt')).toBe('Foto de Bife de chorizo');
+    expect(img.getAttribute('loading')).toBe('lazy');
+    expect(items[0].firstElementChild).toBe(img);
+    expect(items[1].querySelector('img')).toBeNull();
+  });
+
+  it('should hide an image that fails to load and keep the rest of the card', async () => {
+    const fixture = await crearEn('/menu/restaurante-ejemplo');
+    const rota = 'https://tumenuapp.com/images/no-existe.png';
+    const ok = 'https://tumenuapp.com/images/placeholders/postres.png';
+    http.expectOne((req) => req.url.endsWith('/menu/restaurante-ejemplo')).flush({
+      ...MENU_MOCK,
+      categorias: [{ id: 'postres', nombre: 'Postres', productos: [
+        { id: 'a', nombre: 'Flan casero', descripcion: 'Con dulce de leche.', precio: 3800, imagen: rota },
+        { id: 'b', nombre: 'Tiramisú', descripcion: null, precio: 4500, imagen: ok },
+      ] }],
+    });
+    fixture.detectChanges();
+
+    const items = () => (fixture.nativeElement as HTMLElement).querySelectorAll('li.item');
+    items()[0].querySelector('img')!.dispatchEvent(new Event('error'));
+    fixture.detectChanges();
+
+    const card = items()[0];
+    expect(card.querySelector('img')).toBeNull();
+    expect(card.querySelector('h3')?.textContent).toContain('Flan casero');
+    expect(card.querySelector('.descripcion')?.textContent).toContain('Con dulce de leche.');
+    expect(card.querySelector('.precio')?.textContent).toContain('$3.800');
+    // La otra tarjeta conserva su imagen.
+    expect(items()[1].querySelector('img')?.getAttribute('src')).toBe(ok);
+  });
+
   it('should format prices with thousands separator and decimals', () => {
     const app = TestBed.createComponent(AppComponent).componentInstance;
     expect(app.formatearPrecio(12800)).toBe('$12.800');

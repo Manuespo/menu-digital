@@ -50,6 +50,14 @@
         <h2>{{ categoria.nombre }}</h2>
         <ul>
           <li class="item" *ngFor="let item of categoria.productos">
+            <img
+              *ngIf="item.imagen && !imagenesFallidas.has(item.imagen)"
+              class="item-imagen"
+              [src]="item.imagen"
+              [alt]="'Foto de ' + item.nombre"
+              loading="lazy"
+              (error)="imagenesFallidas.add(item.imagen)"
+            />
             <div class="item-texto">
               <h3>{{ item.nombre }}</h3>
               <p class="descripcion" *ngIf="item.descripcion">{{ item.descripcion }}</p>

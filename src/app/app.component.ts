@@ -30,6 +30,10 @@ export class AppComponent implements OnInit {
   menu: Menu | null = null;
   error = false;
 
+  // URLs de imágenes que dieron error al cargar: se dejan de renderizar y la
+  // tarjeta queda como un producto sin foto.
+  imagenesFallidas = new Set<string>();
+
   activeTheme: Theme = 'clasico';
 
   // Si el listado no llegó, el <select> muestra al menos el restaurante cargado.
