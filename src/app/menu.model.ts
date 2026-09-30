@@ -17,6 +17,10 @@ export interface MenuCategory {
 export interface Menu {
   restaurantId: string;
   nombre: string;
+  // Branding personalizable (todavía no se usa en la UI). null = sin valor.
+  colorPrimario: string | null;
+  logoUrl: string | null;
+  fuente: string | null;
   categorias: MenuCategory[];
   tema?: string;
 }

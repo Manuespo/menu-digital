@@ -9,6 +9,9 @@ import { Menu, RestauranteResumen } from './menu.model';
 const MENU_MOCK: Menu = {
   restaurantId: 'restaurante-ejemplo',
   nombre: 'Restaurante Ejemplo',
+  colorPrimario: '#a3462f',
+  logoUrl: null,
+  fuente: 'sans-serif',
   tema: 'clasico',
   categorias: [
     {
