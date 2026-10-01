@@ -1,0 +1,109 @@
+/* Paleta propia (no usa los temas de la carta): la del tema Clásico. */
+:host {
+  display: block;
+  min-height: 100vh;
+  color: #2b2620;
+  background: #faf8f5;
+}
+
+.landing {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.hero {
+  padding: 4rem 0 3rem;
+  text-align: center;
+}
+
+.marca {
+  margin: 0 0 1rem;
+  font-family: 'Poppins', -apple-system, system-ui, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #b5452a;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.bajada {
+  max-width: 34rem;
+  margin: 1rem auto 0;
+  font-size: 1.1rem;
+  color: #6b6357;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.acciones a {
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cta {
+  color: #fff;
+  background: #b5452a;
+}
+
+.secundario {
+  color: #b5452a;
+  border: 1px solid #b5452a;
+}
+
+.beneficios {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  border-top: 1px solid #e6ddd2;
+}
+
+.beneficios h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.beneficios p {
+  margin: 0;
+  color: #6b6357;
+}
+
+.pie {
+  padding: 2rem 0 3rem;
+  border-top: 1px solid #e6ddd2;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #6b6357;
+}
+
+.pie p {
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .marca {
+    font-size: 2.1rem;
+  }
+
+  .hero h1 {
+    font-size: 2.75rem;
+  }
+
+  .beneficios {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

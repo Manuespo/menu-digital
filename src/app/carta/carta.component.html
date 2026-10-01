@@ -9,7 +9,7 @@
     Sirve para previsualizar y comparar los 3 temas. NO es parte del producto final:
     se va a reemplazar por lógica que lea el tema desde una API (ver app.component.ts).
   -->
-  <nav class="theme-switcher" aria-label="Previsualizar tema (solo desarrollo)">
+  <nav class="theme-switcher" aria-label="Previsualizar tema (solo desarrollo)" *ngIf="esEjemplo">
     <button
       type="button"
       *ngFor="let tema of temas"
@@ -23,9 +23,11 @@
   <!-- ⚠️ FIN SELECTOR TEMPORAL -->
 
   <div class="contenido">
+    <a *ngIf="esEjemplo" class="volver-landing" routerLink="/">&larr; Volver a tumenuapp.com</a>
+
     <header class="header">
       <!-- Fuera del *ngIf="menu" para poder cambiar de restaurante aunque falle la carga. -->
-      <label class="selector-restaurante">
+      <label class="selector-restaurante" *ngIf="esEjemplo">
         <span>Restaurante</span>
         <select #selector (change)="irARestaurante(selector.value)">
           <option
@@ -70,9 +72,8 @@
 
     <footer class="footer">
       <p>Precios en pesos argentinos, IVA incluido. Consultá por opciones sin TACC.</p>
+      <p *ngIf="!esEjemplo" class="creditos"><a routerLink="/">Hecho con tumenuapp</a></p>
     </footer>
     </ng-container>
   </div>
 </div>
-
-<router-outlet />

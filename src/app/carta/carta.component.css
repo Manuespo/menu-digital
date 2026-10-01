@@ -179,3 +179,29 @@ ul {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
 }
+
+.volver-landing {
+  display: inline-block;
+  margin: 1.25rem 0 1rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  background: transparent;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.volver-landing:hover {
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+}
+
+.creditos {
+  margin-top: 0.5rem !important;
+}
+
+.creditos a {
+  color: inherit;
+}

@@ -1,0 +1,33 @@
+<main class="landing">
+  <section class="hero">
+    <p class="marca">tumenuapp</p>
+    <h1>Carta digital siempre actualizada, sin reimprimir</h1>
+    <p class="bajada">
+      Tus clientes escanean un QR y ven tu menú en el celular. Cambiás precios, platos o fotos
+      cuando quieras y se actualiza al instante.
+    </p>
+    <div class="acciones">
+      <a class="cta" [href]="'mailto:' + contactoEmail">Quiero mi carta digital</a>
+      <a class="secundario" routerLink="/ejemplos/restaurante-ejemplo">Ver un ejemplo</a>
+    </div>
+  </section>
+
+  <section class="beneficios">
+    <div>
+      <h2>Sin reimpresiones</h2>
+      <p>Subió un precio o se terminó un plato: lo cambiás en minutos, sin imprenta.</p>
+    </div>
+    <div>
+      <h2>Pensada para el celular</h2>
+      <p>Carga rápida y fácil de leer en cualquier teléfono, sin instalar nada.</p>
+    </div>
+    <div>
+      <h2>Con tu estilo</h2>
+      <p>Tu nombre, tus colores y fotos de tus platos.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p>¿Tenés un restaurante? Escribinos a {{ contactoEmail }}</p>
+  </footer>
+</main>
